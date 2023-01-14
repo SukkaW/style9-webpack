@@ -11,7 +11,7 @@ const emptyCssExtractionFile = require.resolve('./extracted');
 
 export default async function style9Loader(this: any, input: string, inputSourceMap: any) {
   const {
-    virtualFileName = '[path][name].[hash:base64:7].css',
+    virtualFileName = '[path][name].[hash:base64:7].style9.css',
     outputCSS = true,
     parserOptions = {
       plugins: ['typescript', 'jsx']

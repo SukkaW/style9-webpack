@@ -1,4 +1,4 @@
-import { default as NextMiniCssExtractPlugin } from 'next/dist/build/webpack/plugins/mini-css-extract-plugin';
+import nextMiniCssExtractPluginExports from 'next/dist/build/webpack/plugins/mini-css-extract-plugin';
 import { findPagesDir } from 'next/dist/lib/find-pages-dir';
 import browserslist from 'next/dist/compiled/browserslist';
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css';
@@ -7,6 +7,11 @@ import { warn } from 'next/dist/build/output/log';
 import type { NextConfig, WebpackConfigContext } from 'next/dist/server/config-shared';
 
 import Style9Plugin from './index';
+
+/** Next.js' precompilation add "__esModule: true", but doesn't add an actual default exports */
+// @ts-expect-error -- Next.js fucks something up
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports -- Next.js fucks something up
+const NextMiniCssExtractPlugin: typeof import('next/dist/build/webpack/plugins/mini-css-extract-plugin') = nextMiniCssExtractPluginExports.default;
 
 // Adopted from https://github.com/vercel/next.js/blob/1f1632979c78b3edfe59fd85d8cce62efcdee688/packages/next/build/webpack-config.ts#L60-L72
 function getSupportedBrowsers(dir: string, isDevelopment: boolean) {
@@ -52,7 +57,7 @@ const getNextMiniCssExtractPlugin = (isDev: boolean) => {
 // Adopt from Next.js' getGlobalCssLoader
 // https://github.com/vercel/next.js/blob/0572e218afe130656be53f7367bf18c4ea389f7d/packages/next/build/webpack/config/blocks/css/loaders/global.ts#L7
 
-function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtractPlugin: NextMiniCssExtractPlugin) {
+function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtractPlugin: typeof NextMiniCssExtractPlugin) {
   const loaders = [];
 
   // Adopt from Next.js' getClientStyleLoader
