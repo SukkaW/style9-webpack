@@ -1,11 +1,11 @@
+import type webpack from 'webpack';
 import { deserializeCss } from './lib/serialize';
-import { getOptions } from './lib/loader-options';
 
-export default function (this: any) {
-  const { source } = getOptions(this);
+export default function (this: webpack.LoaderContext<{ filename: string, source: string }>) {
+  const { source } = this.getOptions();
   const callback = this.async();
 
-  deserializeCss(source as string).then((deserializedCss) => {
+  deserializeCss(source).then((deserializedCss) => {
     callback(null, deserializedCss);
   });
 }

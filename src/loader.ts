@@ -1,7 +1,6 @@
 import path from 'path';
 import babel from '@babel/core';
 import loaderUtils from 'loader-utils';
-import { getOptions } from './lib/loader-options';
 import { stringifyRequest } from './lib/stringify-request';
 
 import babelPlugin from 'style9/babel';
@@ -13,7 +12,13 @@ const NAME = 'style9'; // style9
 const virtualLoader = require.resolve('./virtualFileLoader');
 const emptyCssExtractionFile = require.resolve('./extracted');
 
-export default async function style9Loader(this: webpack.LoaderContext<unknown>, input: string, inputSourceMap: any) {
+interface Style9LoaderOptions {
+  virtualFileName?: string;
+  outputCSS?: boolean;
+  parserOptions?: babel.ParserOptions;
+}
+
+export default async function style9Loader(this: webpack.LoaderContext<Style9LoaderOptions>, input: string, inputSourceMap: any) {
   const {
     virtualFileName = '[path][name].[hash:base64:7].style9.css',
     outputCSS = true,
@@ -21,7 +26,7 @@ export default async function style9Loader(this: webpack.LoaderContext<unknown>,
       plugins: ['typescript', 'jsx']
     },
     ...options
-  } = getOptions(this) || {};
+  } = this.getOptions() || {};
 
   this.async();
 
@@ -38,7 +43,7 @@ export default async function style9Loader(this: webpack.LoaderContext<unknown>,
       sourceFileName: this.resourcePath,
       filename: path.basename(this.resourcePath),
       sourceMaps: true,
-      parserOpts: parserOptions as babel.ParserOptions,
+      parserOpts: parserOptions,
       babelrc: false
     }))!;
 
@@ -49,7 +54,7 @@ export default async function style9Loader(this: webpack.LoaderContext<unknown>,
     } else if (metadata?.style9 === undefined) {
       this.callback(null, input, inputSourceMap);
     } else {
-      const cssPath = loaderUtils.interpolateName(this, virtualFileName as string, {
+      const cssPath = loaderUtils.interpolateName(this, virtualFileName, {
         content: metadata.style9
       });
 
