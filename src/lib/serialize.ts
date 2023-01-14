@@ -19,9 +19,9 @@ export async function serializeCss(source: string) {
 }
 
 export async function deserializeCss(source: string) {
-  if (source.indexOf(compressionFlag) > -1) {
+  if (source.includes(compressionFlag)) {
     const decompressedSource = await unzip(
-      Buffer.from(source.replace(compressionFlag, ''), 'base64'),
+      Buffer.from(source.replace(compressionFlag, ''), 'base64')
     );
 
     return decompressedSource.toString('utf-8');

@@ -1,6 +1,5 @@
 import { SourceMapSource, RawSource } from 'webpack-sources';
-import processCSS from './process-css';
-import style9Loader from './loader';
+import processCSS from './lib/process-css';
 
 import type webpack from 'webpack';
 
@@ -8,7 +7,7 @@ const NAME = 'style9';
 
 export default class Style9Plugin {
   test: RegExp;
-  static loader: typeof style9Loader;
+  static loader: string;
 
   constructor({ test = /\.css$/ } = {}) {
     this.test = test;
@@ -68,4 +67,4 @@ export default class Style9Plugin {
   }
 }
 
-Style9Plugin.loader = style9Loader;
+Style9Plugin.loader = require.resolve('./loader');

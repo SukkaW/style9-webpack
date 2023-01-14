@@ -1,10 +1,15 @@
 {
   "name": "style9-webpack",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "The another Webpack Plugin for Atomic CSS-in-JS implementation style9",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "next.js"
+  ],
   "scripts": {
     "build": "rollup -c rollup.config.ts --configPlugin swc3 --bundleConfigAsCjs",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -41,9 +46,11 @@
     "@types/babel__core": "^7.1.20",
     "@types/loader-utils": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "browserslist": "^4.21.4",
     "eslint": "^8.31.0",
     "eslint-config-sukka": "^1.7.2",
     "eslint-plugin-import": "^2.27.4",
+    "next": "^13.1.2",
     "rollup": "^3.10.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-swc3": "^0.8.0",

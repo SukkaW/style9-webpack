@@ -5,8 +5,9 @@ import copy from 'rollup-plugin-copy';
 import pkgJson from './package.json';
 import { builtinModules } from 'module';
 
-const external = (pkgJson.dependencies ? Object.keys(pkgJson.dependencies) : [])
-  .concat(builtinModules).concat('style9/babel');
+const externalModules = (pkgJson.dependencies ? Object.keys(pkgJson.dependencies) : [])
+  .concat(builtinModules).concat('next');
+const external = (id: string) => externalModules.some((name) => id === name || id.startsWith(`${name}/`));
 
 export default defineConfig([{
   input: 'src/index.ts',
@@ -33,4 +34,28 @@ export default defineConfig([{
     swc()
   ],
   external
+}, {
+  input: 'src/loader.ts',
+  output: {
+    file: 'dist/loader.js',
+    format: 'commonjs'
+  },
+  plugins: [
+    swc()
+  ],
+  external
+}, {
+  input: 'src/next.ts',
+  output: {
+    file: 'dist/next.js',
+    format: 'commonjs'
+  },
+  plugins: [
+    swc()
+  ],
+  external(id: string) {
+    const isExternal = external(id);
+    if (isExternal) return true;
+    return id === './index';
+  }
 }]);

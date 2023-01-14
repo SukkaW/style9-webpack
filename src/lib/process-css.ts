@@ -75,8 +75,8 @@ function getMediaQueries(rule: PostCSS.AtRule | PostCSS.Declaration | undefined)
   while (rule) {
     if (
       // Stryker disable next-line ConditionalExpression: extra test safety
-      rule.type === 'atrule' &&
-      rule.name === 'media'
+      rule.type === 'atrule'
+      && rule.name === 'media'
     ) {
       mediaQueries.push(rule.params);
     }
@@ -121,9 +121,9 @@ function extractDecls(decls: PostCSS.Declaration[]) {
 }
 
 function sortNodes(nodes: {
-    decl: PostCSS.Root | PostCSS.Declaration;
-    mediaQueries: string[];
-    pseudoClasses: any;
+  decl: PostCSS.Root | PostCSS.Declaration;
+  mediaQueries: string[];
+  pseudoClasses: any;
 }[]) {
   nodes.sort((a, b) => {
     if (a.pseudoClasses.length !== b.pseudoClasses.length) {
@@ -174,8 +174,8 @@ const sortPseudo: PostCSS.TransformCallback = (root) => {
   nodes.forEach(({ decl }) => {
     root.append(decl);
   });
-}
+};
 
 export default function processCSS(css: string | Buffer, options: PostCSS.ProcessOptions) {
   return postcss([discardDuplicates, sortPseudo]).process(css, options);
-};
+}

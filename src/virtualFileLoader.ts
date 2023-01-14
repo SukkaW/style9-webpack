@@ -1,4 +1,4 @@
-import { deserializeCss } from './serialize';
+import { deserializeCss } from './lib/serialize';
 import { getOptions } from 'loader-utils';
 
 export default function (this: any) {

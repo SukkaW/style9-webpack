@@ -2,7 +2,7 @@ import path from 'path';
 import babel from '@babel/core';
 import loaderUtils from 'loader-utils';
 import babelPlugin from 'style9/babel';
-import { serializeCss } from './serialize';
+import { serializeCss } from './lib/serialize';
 
 const NAME = 'style9'; // style9
 
