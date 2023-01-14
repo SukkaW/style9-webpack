@@ -8,7 +8,7 @@ style9-webpack is an alternative webpack plugin for style9.
 
 **ATTENTION! Please please please read this first before you install style9-webpack!**
 
-style9 is a a CSS-in-JS compiler, which means you will write your CSS in your JavaScript/JSX/TSX. But unlike other CSS-in-JS solutions, style9 provides an AoT Compiler. style9 will read your source code, collect your style and transform your JS/JSX/TSX, stripping runtime call as much as possible (making the value of `className` a static string literal), and output CSS elsewhere. For more details about how style9 works, please check out [style9's documentation](https://github.com/johanholmerin/style9/blob/master/docs/How-it-works.md).
+style9 is a CSS-in-JS compiler, which means you will write your CSS in your JavaScript/JSX/TSX. But unlike other CSS-in-JS solutions, style9 provides an AoT Compiler. style9 will read your source code, collect your style and transform your JS/JSX/TSX, stripping runtime call as much as possible (making the value of `className` a static string literal), and output CSS elsewhere. For more details about how style9 works, please check out [style9's documentation](https://github.com/johanholmerin/style9/blob/master/docs/How-it-works.md).
 
 style9 does provide a webpack plugin. It uses [webpack-virtual-modules](https://github.com/sysgears/webpack-virtual-modules) under the hood. During the compilation, style9 collects your styles and write collected CSS into virtual modules. Those virtual css files will later be extracted by `MiniCssExtractPlugin`.
 
