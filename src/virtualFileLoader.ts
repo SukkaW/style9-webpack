@@ -1,5 +1,5 @@
 import { deserializeCss } from './lib/serialize';
-import { getOptions } from 'loader-utils';
+import { getOptions } from './lib/loader-options';
 
 export default function (this: any) {
   const { source } = getOptions(this);

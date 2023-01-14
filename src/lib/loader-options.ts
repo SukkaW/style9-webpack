@@ -1,3 +1,7 @@
+// Backport from:
+// - https://github.com/webpack/loader-utils/blob/v1.0.0-branch/lib/getOptions.js
+// - https://github.com/webpack/loader-utils/blob/v1.0.0-branch/lib/parseQuery.js
+
 import type webpack from 'webpack';
 
 import JSON5 from 'json5';
