@@ -39,7 +39,7 @@
     "postcss-discard-duplicates": "^5.1.0",
     "postcss-selector-parser": "^6.0.11",
     "sort-css-media-queries": "^2.1.0",
-    "style9": "^0.16.0",
+    "style9": "^0.16.1",
     "webpack-sources": "^3.2.3"
   },
   "devDependencies": {
