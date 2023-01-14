@@ -55,7 +55,7 @@ export default async function style9Loader(this: webpack.LoaderContext<unknown>,
 
       const serializedCss = await serializeCss(metadata.style9 as string);
       const virtualResourceLoader = `${virtualLoader}?${JSON.stringify({
-        fileName: virtualFileName,
+        fileName: cssPath,
         source: serializedCss
       })}`;
 
