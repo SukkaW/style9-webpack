@@ -12,9 +12,9 @@ style9 is a CSS-in-JS compiler, which means you will write your CSS in your Java
 
 style9 does provide a webpack plugin. It uses [webpack-virtual-modules](https://github.com/sysgears/webpack-virtual-modules) under the hood. During the compilation, style9 collects your styles and write collected CSS into virtual modules. Those virtual css files will later be extracted by `MiniCssExtractPlugin`.
 
-However, webpack-virtual-modules [doesn't work well with Next.js](https://github.com/vercel/next.js/issues/44266). Next.js launches multiple Webpack Compiler instances to compile its server-side and client-side code separately. And webpack-virtual-modules just doesn't work when it is being shared between multiple Webpack Compiler instances.
+However, webpack-virtual-modules [doesn't work well with Next.js](https://github.com/vercel/next.js/issues/44266). Next.js launches multiple webpack compiler instances to compile its server-side and client-side code separately. And webpack-virtual-modules just doesn't work when it is being shared between multiple webpack compiler instances.
 
-I start this project as a Proof of Concept, to see if I can make a webpack plugin for style9 that doesn't require webpack-virtual-modules. I uses the `virtualFileLoader` idea from [Vanilla Extract](https://github.com/vanilla-extract-css/vanilla-extract), another CSS-in-JS compiler. You can found the implementation of Vanilla Extract's `virtualFileLoader` [here](https://github.com/vanilla-extract-css/vanilla-extract/blob/aabb5869a626b7d966814ec8bc322a0392b77561/packages/webpack-plugin/src/virtualFileLoader.ts).
+I start this project as a Proof of Concept, to see if I can make a webpack plugin for style9 that doesn't require webpack-virtual-modules. I uses the `virtualFileLoader` idea from [Vanilla Extract](https://github.com/vanilla-extract-css/vanilla-extract), another CSS-in-JS compiler. You can find the implementation of Vanilla Extract's `virtualFileLoader` [here](https://github.com/vanilla-extract-css/vanilla-extract/blob/aabb5869a626b7d966814ec8bc322a0392b77561/packages/webpack-plugin/src/virtualFileLoader.ts).
 
 **You will most likely want to use style9's built-in webpack plugin instead. It works well for most of the cases. style9-webpack is just a Proof of Concept.** But if you are using Next.js 13, and you are having trouble with style9's built-in Next.js plugin, you can give style9-webpack a shot.
 
@@ -74,7 +74,7 @@ module.exports = {
 }
 ```
 
-**style9-webpack doesn't supports Gatsby**
+**style9-webpack doesn't support Gatsby**
 
 You should use style9's built-in gatsby plugin instead. See [style9's documentation](https://github.com/johanholmerin/style9/blob/master/docs/Bundler-plugins.md#gatsby) for usage with Gatsby.
 
