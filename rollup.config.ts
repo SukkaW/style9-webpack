@@ -19,7 +19,7 @@ export default defineConfig([{
     swc(),
     copy({
       targets: [
-        { src: 'src/extracted.js', dest: 'dist' }
+        { src: 'src/extracted.style9.css', dest: 'dist' }
       ]
     })
   ],

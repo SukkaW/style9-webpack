@@ -7,6 +7,7 @@ import { warn } from 'next/dist/build/output/log';
 import type { NextConfig, WebpackConfigContext } from 'next/dist/server/config-shared';
 
 import Style9Plugin from './index';
+import type webpack from 'webpack';
 
 /** Next.js' precompilation add "__esModule: true", but doesn't add an actual default exports */
 // @ts-expect-error -- Next.js fucks something up
@@ -55,13 +56,13 @@ const getNextMiniCssExtractPlugin = (isDev: boolean) => {
   return NextMiniCssExtractPlugin;
 };
 // Adopt from Next.js' getGlobalCssLoader
-// https://github.com/vercel/next.js/blob/0572e218afe130656be53f7367bf18c4ea389f7d/packages/next/build/webpack/config/blocks/css/loaders/global.ts#L7
+// https://github.com/vercel/next.js/blob/d61b0761efae09bd9cb1201ff134ed8950d9deca/packages/next/src/build/webpack/config/blocks/css/loaders/global.ts#L7
 
 function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtractPlugin: typeof NextMiniCssExtractPlugin) {
-  const loaders = [];
+  const loaders: webpack.RuleSetUseItem[] = [];
 
   // Adopt from Next.js' getClientStyleLoader
-  // https://github.com/vercel/next.js/blob/0572e218afe130656be53f7367bf18c4ea389f7d/packages/next/build/webpack/config/blocks/css/loaders/client.ts#L4
+  // https://github.com/vercel/next.js/blob/d61b0761efae09bd9cb1201ff134ed8950d9deca/packages/next/src/build/webpack/config/blocks/css/loaders/client.ts#L3
   if (!options.isServer) {
     loaders.push({
       loader: (MiniCssExtractPlugin as any).loader,
@@ -167,7 +168,7 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
         config.optimization.splitChunks.cacheGroups.style9 = {
           name: 'style9',
           // We apply cacheGroups to style9 virtual css only
-          test: /\.style9.css$/,
+          test: /\.extracted.style9.css$/,
           chunks: 'all',
           enforce: true
         };

@@ -10,7 +10,7 @@ import type webpack from 'webpack';
 const NAME = 'style9'; // style9
 
 const virtualLoader = require.resolve('./virtualFileLoader');
-const emptyCssExtractionFile = require.resolve('./extracted');
+const emptyCssExtractionFile = require.resolve('./extracted.style9.css');
 
 interface Style9LoaderOptions {
   virtualFileName?: string;
