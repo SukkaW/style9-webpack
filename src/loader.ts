@@ -1,15 +1,19 @@
 import path from 'path';
 import babel from '@babel/core';
 import loaderUtils from 'loader-utils';
+import { getOptions } from './lib/loader-options';
+import { stringifyRequest } from './lib/stringify-request';
+
 import babelPlugin from 'style9/babel';
 import { serializeCss } from './lib/serialize';
+import type webpack from 'webpack';
 
 const NAME = 'style9'; // style9
 
 const virtualLoader = require.resolve('./virtualFileLoader');
 const emptyCssExtractionFile = require.resolve('./extracted');
 
-export default async function style9Loader(this: any, input: string, inputSourceMap: any) {
+export default async function style9Loader(this: webpack.LoaderContext<unknown>, input: string, inputSourceMap: any) {
   const {
     virtualFileName = '[path][name].[hash:base64:7].style9.css',
     outputCSS = true,
@@ -17,7 +21,7 @@ export default async function style9Loader(this: any, input: string, inputSource
       plugins: ['typescript', 'jsx']
     },
     ...options
-  } = loaderUtils.getOptions(this) || {};
+  } = getOptions(this) || {};
 
   this.async();
 
@@ -39,7 +43,7 @@ export default async function style9Loader(this: any, input: string, inputSource
     }))!;
 
     if (!outputCSS) {
-      this.callback(null, code, map);
+      this.callback(null, code ?? undefined, map ?? undefined);
     } else if (metadata && !('style9' in metadata)) {
       this.callback(null, input, inputSourceMap);
     } else if (metadata?.style9 === undefined) {
@@ -55,15 +59,15 @@ export default async function style9Loader(this: any, input: string, inputSource
         source: serializedCss
       })}`;
 
-      const request = loaderUtils.stringifyRequest(
+      const request = stringifyRequest(
         this,
         `${cssPath}!=!${virtualResourceLoader}!${emptyCssExtractionFile}`
       );
 
       const postfix = `\nimport ${request};`;
-      this.callback(null, code + postfix, map);
+      this.callback(null, code + postfix, map ?? undefined);
     }
   } catch (error) {
-    this.callback(error);
+    this.callback(error as Error);
   }
 }

@@ -1,6 +1,6 @@
 # style9-webpack
 
-Created by Johan Holmerin, [style9](https://github.com/johanholmerin/style9) is a CSS-in-JS compiler inspired by Facebook's [stylex](https://www.youtube.com/watch?v=9JZHodNR184), with near-zero runtime, atomic CSS extraction and TypeScript support. Framework agnostic.
+Created by Johan Holmerin, [style9](https://github.com/johanholmerin/style9) is a CSS-in-JS compiler inspired by Facebook's [stylex](https://www.youtube.com/watch?v=9JZHodNR184), with near-zero runtime, atomic CSS extraction, and TypeScript support. Framework agnostic.
 
 style9-webpack is an alternative webpack plugin for style9.
 
@@ -8,23 +8,23 @@ style9-webpack is an alternative webpack plugin for style9.
 
 **ATTENTION! Please please please read this first before you install style9-webpack!**
 
-style9 is a CSS-in-JS compiler, which means you will write your CSS in your JavaScript/JSX/TSX. But unlike other CSS-in-JS solutions, style9 provides an AoT Compiler. style9 will read your source code, collect your style and transform your JS/JSX/TSX, stripping runtime call as much as possible (making the value of `className` a static string literal), and output CSS elsewhere. For more details about how style9 works, please check out [style9's documentation](https://github.com/johanholmerin/style9/blob/master/docs/How-it-works.md).
+style9 is a CSS-in-JS compiler, which means you will write your CSS in your JavaScript/JSX/TSX. But unlike other CSS-in-JS solutions, style9 provides an AoT Compiler. style9 will read your source code, collect your style and transform your JS/JSX/TSX, stripping runtime calls as much as possible (making the value of `className` a static string literal), and output CSS elsewhere. For more details about how style9 works, please check out [style9's documentation](https://github.com/johanholmerin/style9/blob/master/docs/How-it-works.md).
 
-style9 does provide a webpack plugin. It uses [webpack-virtual-modules](https://github.com/sysgears/webpack-virtual-modules) under the hood. During the compilation, style9 collects your styles and write collected CSS into virtual modules. Those virtual css files will later be extracted by `MiniCssExtractPlugin`.
+style9 does provide a webpack plugin. It uses [`webpack-virtual-modules`](https://github.com/sysgears/webpack-virtual-modules) under the hood. During the compilation, style9 collects your styles and writes collected CSS into virtual modules. `MiniCssExtractPlugin` later will extract those virtual css files.
 
-However, webpack-virtual-modules [doesn't work well with Next.js](https://github.com/vercel/next.js/issues/44266). Next.js launches multiple webpack compiler instances to compile its server-side and client-side code separately. And webpack-virtual-modules just doesn't work when it is being shared between multiple webpack compiler instances.
+However, `webpack-virtual-modules` [doesn't work well with Next.js](https://github.com/vercel/next.js/issues/44266). Next.js launches multiple webpack compiler instances to compile its server-side and client-side code separately. And `webpack-virtual-modules` just doesn't work when it is being shared between multiple webpack compiler instances.
 
-I start this project as a Proof of Concept, to see if I can make a webpack plugin for style9 that doesn't require webpack-virtual-modules. I uses the `virtualFileLoader` idea from [Vanilla Extract](https://github.com/vanilla-extract-css/vanilla-extract), another CSS-in-JS compiler. You can find the implementation of Vanilla Extract's `virtualFileLoader` [here](https://github.com/vanilla-extract-css/vanilla-extract/blob/aabb5869a626b7d966814ec8bc322a0392b77561/packages/webpack-plugin/src/virtualFileLoader.ts).
+I start this project as a Proof of Concept, to see if it is possible to make a webpack plugin for style9 that doesn't require `webpack-virtual-modules`. I use the `virtualFileLoader` idea from [Vanilla Extract](https://github.com/vanilla-extract-css/vanilla-extract), another CSS-in-JS compiler. You can find the implementation of Vanilla Extract's `virtualFileLoader` [here](https://github.com/vanilla-extract-css/vanilla-extract/blob/aabb5869a626b7d966814ec8bc322a0392b77561/packages/webpack-plugin/src/virtualFileLoader.ts).
 
-**You will most likely want to use style9's built-in webpack plugin instead. It works well for most of the cases. style9-webpack is just a Proof of Concept.** But if you are using Next.js 13, and you are having trouble with style9's built-in Next.js plugin, you can give style9-webpack a shot.
+**You most likely want to use style9's built-in webpack plugin instead. It works well for most cases. style9-webpack is just a Proof of Concept.** But if you are using Next.js 13, and you are having trouble with style9's built-in Next.js plugin, you can give style9-webpack a shot.
 
 ## Differences
 
-The main differences between style9's built-in webpack plugin and style9-webpack are as follow:
+The main differences between style9's built-in webpack plugin and style9-webpack are as follows:
 
-**style9-webpack loader doesn't have `inlineLoader` option**
+**style9-webpack loader doesn't have an `inlineLoader` option**
 
-style9's built-in webpack loader has an `inlineLoader` option. It allows you to chain other webpack loaders (like `css-loader`) to process the collected virtual CSS, like this:
+style9's built-in webpack loader has an `inlineLoader` option. It allows you to chain other webpack loaders (like `css-loader`) to process the collected virtual css, like this:
 
 ```js
 module.exports = {
@@ -46,7 +46,7 @@ module.exports = {
 }
 ```
 
-style9-webpack doesn't support this approach. Instead, you will need an extra rule to provide your loaders:
+style9-webpack doesn't support this approach. Instead, you will need add an extra rule to provide your loaders:
 
 ```js
 module.exports = {

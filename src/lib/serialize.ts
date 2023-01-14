@@ -11,7 +11,6 @@ const compressionFlag = '#';
 export async function serializeCss(source: string) {
   if (source.length > compressionThreshold) {
     const compressedSource = await zip(source);
-
     return compressionFlag + compressedSource.toString('base64');
   }
 
@@ -26,6 +25,5 @@ export async function deserializeCss(source: string) {
 
     return decompressedSource.toString('utf-8');
   }
-
   return Buffer.from(source, 'base64').toString('utf-8');
 }
