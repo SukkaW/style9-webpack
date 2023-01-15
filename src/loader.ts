@@ -41,7 +41,7 @@ export default async function style9Loader(this: webpack.LoaderContext<Style9Loa
       inputSourceMap: inputSourceMap || true,
       sourceFileName: this.resourcePath,
       filename: path.basename(this.resourcePath),
-      sourceMaps: true,
+      sourceMaps: !!this.sourceMap,
       parserOpts: parserOptions,
       babelrc: false
     }))!;
