@@ -1,6 +1,6 @@
 {
   "name": "style9-webpack",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "The another Webpack Plugin for Atomic CSS-in-JS implementation style9",
   "main": "dist/index.js",
   "files": [
