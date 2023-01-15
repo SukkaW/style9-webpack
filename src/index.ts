@@ -1,9 +1,8 @@
 import { SourceMapSource, RawSource } from 'webpack-sources';
 import processCSS from './lib/process-css';
+import { NAME } from './lib/constants';
 
 import type webpack from 'webpack';
-
-const NAME = 'style9';
 
 export default class Style9Plugin {
   test: RegExp;

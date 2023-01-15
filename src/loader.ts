@@ -2,12 +2,11 @@ import path from 'path';
 import babel from '@babel/core';
 import loaderUtils from 'loader-utils';
 import { stringifyRequest } from './lib/stringify-request';
+import { NAME } from './lib/constants';
 
 import babelPlugin from 'style9/babel';
 import { serializeCss } from './lib/serialize';
 import type webpack from 'webpack';
-
-const NAME = 'style9'; // style9
 
 const virtualLoader = require.resolve('./virtualFileLoader');
 const emptyCssExtractionFile = require.resolve('./extracted.style9.css');
@@ -19,6 +18,14 @@ interface Style9LoaderOptions {
 }
 
 export default async function style9Loader(this: webpack.LoaderContext<Style9LoaderOptions>, input: string, inputSourceMap: any) {
+  const callback = this.async();
+
+  // bail out early if the input doesn't contain "style9"
+  if (!input.includes(NAME)) {
+    callback(null, input, inputSourceMap);
+    return;
+  }
+
   const {
     virtualFileName = '[path][name].[hash:base64:7].style9.css',
     outputCSS = true,
@@ -27,14 +34,6 @@ export default async function style9Loader(this: webpack.LoaderContext<Style9Loa
     },
     ...options
   } = this.getOptions() || {};
-
-  this.async();
-
-  // bail out early if the input doesn't contain "style9"
-  if (!input.includes(NAME)) {
-    this.callback(null, input, inputSourceMap);
-    return;
-  }
 
   try {
     const { code, map, metadata } = (await babel.transformAsync(input, {
@@ -48,15 +47,19 @@ export default async function style9Loader(this: webpack.LoaderContext<Style9Loa
     }))!;
 
     if (!outputCSS) {
-      this.callback(null, code ?? undefined, map ?? undefined);
+      callback(null, code ?? undefined, map ?? undefined);
     } else if (metadata && !('style9' in metadata)) {
-      this.callback(null, input, inputSourceMap);
-    } else if (metadata?.style9 === undefined) {
-      this.callback(null, input, inputSourceMap);
+      callback(null, input, inputSourceMap);
+    } else if (metadata?.style9 == null) {
+      callback(null, input, inputSourceMap);
     } else {
-      const cssPath = loaderUtils.interpolateName(this, virtualFileName, {
-        content: metadata.style9
-      });
+      const cssPath = loaderUtils.interpolateName(
+        this,
+        virtualFileName,
+        {
+          content: metadata.style9
+        }
+      );
 
       const serializedCss = await serializeCss(metadata.style9 as string);
       const virtualResourceLoader = `${virtualLoader}?${JSON.stringify({
@@ -70,9 +73,9 @@ export default async function style9Loader(this: webpack.LoaderContext<Style9Loa
       );
 
       const postfix = `\nimport ${request};`;
-      this.callback(null, code + postfix, map ?? undefined);
+      callback(null, code + postfix, map ?? undefined);
     }
   } catch (error) {
-    this.callback(error as Error);
+    callback(error as Error);
   }
 }

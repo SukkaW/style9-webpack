@@ -25,6 +25,8 @@
  * THE SOFTWARE.
  */
 
+export const NAME = 'style9';
+
 // https://github.com/necolas/react-native-web/blob/36dacb2052efdab2a28655773dc76934157d9134/packages/react-native-web/src/modules/unitlessNumbers/index
 export const UNITLESS_NUMBERS = [
   'animationIterationCount',
