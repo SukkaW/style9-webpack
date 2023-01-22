@@ -73,22 +73,29 @@ function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtract
     });
   }
 
+  const postcss = () => lazyPostCSS(
+    options.dir,
+    getSupportedBrowsers(options.dir, options.dev),
+    undefined
+  );
+
   loaders.push({
     // https://github.com/vercel/next.js/blob/0572e218afe130656be53f7367bf18c4ea389f7d/packages/next/build/webpack/config/blocks/css/loaders/global.ts#L29-L38
     loader: cssLoader,
     options: {
       // https://github.com/vercel/next.js/blob/88a5f263f11cb55907f0d89a4cd53647ee8e96ac/packages/next/build/webpack/config/blocks/css/index.ts#L142-L147
-      postcss: () => lazyPostCSS(
-        options.dir,
-        getSupportedBrowsers(options.dir, options.dev),
-        undefined
-      ),
+      postcss,
       importLoaders: 1,
       modules: false
     }
   });
-  // We don't need postcss loader here, as style9 always produce vanilla css,
-  // and only perform sort/merge afterwards
+
+  loaders.push({
+    loader: require.resolve('next/dist/build/webpack/loaders/postcss-loader/src'),
+    options: {
+      postcss
+    }
+  });
 
   return loaders;
 }
@@ -195,7 +202,23 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
           config.plugins.push(
             new MiniCssExtractPlugin({
               filename,
-              chunkFilename: filename
+              chunkFilename: filename,
+              // Next.js guarantees that CSS order "doesn't matter", due to imposed
+              // restrictions:
+              // 1. Global CSS can only be defined in a single entrypoint (_app)
+              // 2. CSS Modules generate scoped class names by default and cannot
+              //    include Global CSS (:global() selector).
+              //
+              // While not a perfect guarantee (e.g. liberal use of `:global()`
+              // selector), this assumption is required to code-split CSS.
+              //
+              // As for Style9, the CSS is always atomic (so classes are always unique),
+              // and Style9 Plugin will always sort the css based on media query and pseudo
+              // selector.
+              //
+              // If this warning were to trigger, it'd be unactionable by the user,
+              // but likely not valid -- so just disable it.
+              ignoreOrder: true
             })
           );
         }
