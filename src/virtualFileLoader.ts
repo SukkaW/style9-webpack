@@ -7,5 +7,7 @@ export default function (this: webpack.LoaderContext<{ filename: string, source:
 
   deserializeCss(source).then((deserializedCss) => {
     callback(null, deserializedCss);
+  }).catch((e) => {
+    callback(e as Error);
   });
 }

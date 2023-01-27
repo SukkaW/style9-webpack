@@ -7,9 +7,10 @@ export default function (this: webpack.LoaderContext<unknown>) {
 
   try {
     const { source } = JSON.parse(json);
-    const callback = this.async();
     deserializeCss(source).then((deserializedCss) => {
       callback(null, deserializedCss);
+    }).catch((e) => {
+      callback(e as Error);
     });
   } catch (e) {
     callback(e as Error);
