@@ -1,11 +1,12 @@
 {
   "name": "style9-webpack",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The another Webpack Plugin for Atomic CSS-in-JS implementation style9",
   "main": "dist/index.js",
   "files": [
     "dist",
-    "next.js"
+    "next.js",
+    "next-appdir.js"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts --configPlugin swc3 --bundleConfigAsCjs",
