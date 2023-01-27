@@ -113,7 +113,7 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
         + '\n'
         + '"style9-webpack/next-appdir" is designed to workaround a Next.js internal implementation quirk, so that you can use style9 with Next.js 13 beta appDir perfectly. See https://github.com/SukkaW/style9-webpack/issues/1 for more information.'
         + '\n'
-        + 'Once Next.js has fixed the issue, you can switch back to using "style9-webpack/next".'
+        + 'Once Next.js has fixed the issue, you can switch back to "style9-webpack/next".'
       );
 
       const findPagesDirResult = findPagesDir(
@@ -179,7 +179,7 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
 
       // Here we matches virtual css file emitted by Style9Plugin
       cssRules.unshift({
-        test: /\.virtual\.next\.style9\.css$/,
+        test: /virtual\.next\.style9\.css/,
         use: getStyle9VirtualCssLoader(ctx, MiniCssExtractPlugin)
       });
 
@@ -187,7 +187,7 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
         config.optimization.splitChunks.cacheGroups.style9 = {
           name: 'style9',
           // We apply cacheGroups to style9 virtual css only
-          test: /extracted\.style9\.css$/,
+          test: /style9\.css/,
           chunks: 'all',
           enforce: true
         };
