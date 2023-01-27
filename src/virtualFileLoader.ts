@@ -1,5 +1,5 @@
 import type webpack from 'webpack';
-import { deserializeCss } from './lib/serialize';
+import { deserializeCss } from './lib/deserialize-css';
 
 export default function (this: webpack.LoaderContext<{ filename: string, source: string }>) {
   const { source } = this.getOptions();

@@ -5,7 +5,7 @@ import { stringifyRequest } from '../lib/stringify-request';
 import { NAME } from '../lib/constants';
 
 import babelPlugin from 'style9/babel';
-import { serializeCss } from '../lib/serialize';
+import { serializeCss } from '../lib/serialize-css';
 import type webpack from 'webpack';
 
 const emptyCssExtractionFile = require.resolve('./virtual.next.style9.css');
@@ -61,7 +61,6 @@ export default async function style9Loader(this: webpack.LoaderContext<Style9Loa
       );
 
       const serializedCss = await serializeCss(metadata.style9 as string);
-
       const request = stringifyRequest(
         this,
         // Next.js RSC CSS extraction will discard any loaders in the request.

@@ -1,6 +1,7 @@
 /**
  * The MIT License (MIT)
  *
+ * Copyright (c) Sukka <https://skk.moe>
  * Copyright (c) Johan Holmerin.
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -26,6 +27,7 @@
  */
 
 export const NAME = 'style9';
+export const SERIALIZE_COMPRESSION_FLAG = '#';
 
 // https://github.com/necolas/react-native-web/blob/36dacb2052efdab2a28655773dc76934157d9134/packages/react-native-web/src/modules/unitlessNumbers/index
 export const UNITLESS_NUMBERS = [

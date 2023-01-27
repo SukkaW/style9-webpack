@@ -5,7 +5,7 @@ import { stringifyRequest } from './lib/stringify-request';
 import { NAME } from './lib/constants';
 
 import babelPlugin from 'style9/babel';
-import { serializeCss } from './lib/serialize';
+import { serializeCss } from './lib/serialize-css';
 import type webpack from 'webpack';
 
 const virtualLoader = require.resolve('./virtualFileLoader');
