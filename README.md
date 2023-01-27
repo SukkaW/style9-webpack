@@ -152,6 +152,25 @@ module.exports = withStyle9({
 });
 ```
 
+### Next.js (appDir)
+
+Currently, `style9-webpack/next` doesn't work well with Next.js appDir when "style9.create" is used in Server Components, due to a Next.js internal implementation detail. See https://github.com/SukkaW/style9-webpack/issues/1 for more information.
+
+In the meantime, you can use `style9-webpack/next-appdir` instead. It is a plugin specially designed to workaround the Next.js internal implementation quirk and can work with Next.js 13 beta appDir perfectly.
+
+```js
+// next.config.js
+const withStyle9 = require('style9-webpack/next-appdir');
+
+module.exports = withStyle9({
+  parserOptions: {}, // // {import('@babel/core').ParserOptions} optional, default is `{ plugins: ['typescript', 'jsx'] }`
+  minifyProperties: process.env.NODE_ENV === 'production', // {boolean?} optional, default is false, recommended to enable this option in production
+  incrementalClassnames: false, // {boolean?} optional, default is false
+})({
+  // Your Next.js config goes here.
+});
+```
+
 ## Author
 
 **style9-webpack** © [Sukka](https://github.com/SukkaW), Released under the [MIT](./LICENSE) License.<br>

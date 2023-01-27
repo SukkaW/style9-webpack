@@ -58,4 +58,43 @@ export default defineConfig([{
     if (isExternal) return true;
     return id === './index';
   }
+}, {
+  input: 'src/next-appdir/index.ts',
+  output: {
+    file: 'dist/next-appdir/index.js',
+    format: 'commonjs'
+  },
+  plugins: [
+    swc(),
+    copy({
+      targets: [
+        { src: 'src/next-appdir/virtual.next.style9.css', dest: 'dist/next-appdir' }
+      ]
+    })
+  ],
+  external(id: string) {
+    const isExternal = external(id);
+    if (isExternal) return true;
+    return id === '../index';
+  }
+}, {
+  input: 'src/next-appdir/style9-next-loader.ts',
+  output: {
+    file: 'dist/next-appdir/style9-next-loader.js',
+    format: 'commonjs'
+  },
+  plugins: [
+    swc()
+  ],
+  external
+}, {
+  input: 'src/next-appdir/style9-next-virtual-loader.ts',
+  output: {
+    file: 'dist/next-appdir/style9-next-virtual-loader.js',
+    format: 'commonjs'
+  },
+  plugins: [
+    swc()
+  ],
+  external
 }]);

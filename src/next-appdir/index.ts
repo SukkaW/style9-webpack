@@ -6,7 +6,7 @@ import { warn } from 'next/dist/build/output/log';
 
 import type { NextConfig, WebpackConfigContext } from 'next/dist/server/config-shared';
 
-import Style9Plugin from './index';
+import Style9Plugin from '../index';
 import type webpack from 'webpack';
 
 /** Next.js' precompilation add "__esModule: true", but doesn't add an actual default exports */
@@ -97,6 +97,10 @@ function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtract
     }
   });
 
+  loaders.push({
+    loader: require.resolve('./style9-next-virtual-loader')
+  });
+
   return loaders;
 }
 
@@ -104,6 +108,14 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
   return {
     ...nextConfig,
     webpack(config: any, ctx: WebpackConfigContext) {
+      warn(
+        'It seems that you are using "style9-webpack/next-appdir".'
+        + '\n'
+        + '"style9-webpack/next-appdir" is designed to workaround a Next.js internal implementation quirk, so that you can use style9 with Next.js 13 beta appDir perfectly. See https://github.com/SukkaW/style9-webpack/issues/1 for more information.'
+        + '\n'
+        + 'Once Next.js has fixed the issue, you can switch back to using "style9-webpack/next".'
+      );
+
       const findPagesDirResult = findPagesDir(
         ctx.dir,
         !!(nextConfig.experimental && nextConfig.experimental.appDir)
@@ -116,19 +128,6 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
         // on Next.js 12, findPagesDirResult is a string. on Next.js 13, findPagesDirResult is an object
         = !!(nextConfig.experimental && nextConfig.experimental.appDir)
         && !!(findPagesDirResult && findPagesDirResult.appDir);
-
-      // TODO: remove this warning once Next.js has fixed the issue, and 2 plugins merges
-      if (hasAppDir) {
-        warn(
-          'It seems that you are using Next.js 13 beta appDir feature.'
-          + '\n'
-          + 'Currently, "style9-webpack/next" doesn\'t work well with Next.js appDir when "style9.create" is used in Server Components, '
-          + 'due to a Next.js internal implementation detail. '
-          + 'See https://github.com/SukkaW/style9-webpack/issues/1 for more information.'
-          + '\n'
-          + 'In the meantime, you can use "style9-webpack/next-appdir" instead. It is a plugin specially designed to workaround the Next.js internal implementation quirk and can work with Next.js 13 beta appDir perfectly.'
-        );
-      }
 
       const outputCSS = hasAppDir
         // When there is appDir, always output css, even on server (React Server Component is also server)
@@ -157,7 +156,7 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
         exclude: /node_modules/,
         use: [
           {
-            loader: Style9Plugin.loader,
+            loader: require.resolve('./style9-next-loader'),
             options: {
               // Here we configure a custom virtual css file name, for later matches
               virtualFileName: '[path][name].[hash:base64:7].style9.css',
@@ -180,7 +179,7 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
 
       // Here we matches virtual css file emitted by Style9Plugin
       cssRules.unshift({
-        test: /\.style9.css$/,
+        test: /\.virtual\.next\.style9\.css$/,
         use: getStyle9VirtualCssLoader(ctx, MiniCssExtractPlugin)
       });
 
