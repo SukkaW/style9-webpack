@@ -185,6 +185,9 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
       });
 
       if (outputCSS) {
+        config.optimization.splitChunks ||= {};
+        config.optimization.splitChunks.cacheGroups ||= {};
+
         config.optimization.splitChunks.cacheGroups.style9 = {
           name: 'style9',
           // We apply cacheGroups to style9 virtual css only

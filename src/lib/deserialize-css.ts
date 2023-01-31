@@ -5,9 +5,9 @@ import { SERIALIZE_COMPRESSION_FLAG } from './constants';
 const unzip = promisify(gunzip);
 
 export async function deserializeCss(source: string) {
-  if (source.includes(SERIALIZE_COMPRESSION_FLAG)) {
+  if (source.startsWith(SERIALIZE_COMPRESSION_FLAG)) {
     const decompressedSource = await unzip(
-      Buffer.from(source.replace(SERIALIZE_COMPRESSION_FLAG, ''), 'base64')
+      Buffer.from(source.substring(SERIALIZE_COMPRESSION_FLAG.length), 'base64')
     );
 
     return decompressedSource.toString('utf-8');
