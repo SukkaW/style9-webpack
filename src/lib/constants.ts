@@ -27,7 +27,7 @@
  */
 
 export const NAME = 'style9';
-export const SERIALIZE_COMPRESSION_FLAG = '#';
+export const SERIALIZE_COMPRESSION_FLAG = '__SECRET_SERIALIZE_COMPRESSION_FLAG_DO_NOT_USE_OR_YOU_WILL_BE_FIRED__';
 
 // https://github.com/necolas/react-native-web/blob/36dacb2052efdab2a28655773dc76934157d9134/packages/react-native-web/src/modules/unitlessNumbers/index
 export const UNITLESS_NUMBERS = [

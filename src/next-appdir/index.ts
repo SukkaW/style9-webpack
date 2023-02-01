@@ -145,9 +145,8 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
 
       // For some reason, Next 11.0.1 has `config.optimization.splitChunks`
       // set to `false` when webpack 5 is enabled.
-      config.optimization.splitChunks = config.optimization.splitChunks || {
-        cacheGroups: {}
-      };
+      config.optimization.splitChunks ||= {};
+      config.optimization.splitChunks.cacheGroups ||= {};
 
       const MiniCssExtractPlugin = getNextMiniCssExtractPlugin(ctx.dev);
 
