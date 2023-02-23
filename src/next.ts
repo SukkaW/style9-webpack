@@ -9,6 +9,11 @@ import type { NextConfig, WebpackConfigContext } from 'next/dist/server/config-s
 import Style9Plugin from './index';
 import type webpack from 'webpack';
 
+interface RuleOptions {
+  test?: webpack.RuleSetCondition;
+  exclude?: webpack.RuleSetCondition;
+}
+
 /** Next.js' precompilation add "__esModule: true", but doesn't add an actual default exports */
 // @ts-expect-error -- Next.js fucks something up
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- Next.js fucks something up
@@ -100,7 +105,11 @@ function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtract
   return loaders;
 }
 
-module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
+module.exports = (pluginOptions = {}, ruleOptions: RuleOptions = {}) => (nextConfig: NextConfig = {}) => {
+  const {
+    test = /\.(tsx|ts|js|mjs|jsx)$/,
+    exclude = /node_modules/
+  } = ruleOptions;
   return {
     ...nextConfig,
     webpack(config: any, ctx: WebpackConfigContext) {
@@ -153,8 +162,8 @@ module.exports = (pluginOptions = {}) => (nextConfig: NextConfig = {}) => {
       const MiniCssExtractPlugin = getNextMiniCssExtractPlugin(ctx.dev);
 
       config.module.rules.push({
-        test: /\.(tsx|ts|js|mjs|jsx)$/,
-        exclude: /node_modules/,
+        test,
+        exclude,
         use: [
           {
             loader: Style9Plugin.loader,
