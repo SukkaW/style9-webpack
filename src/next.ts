@@ -9,10 +9,12 @@ import type { NextConfig, WebpackConfigContext } from 'next/dist/server/config-s
 import Style9Plugin from './index';
 import type webpack from 'webpack';
 
-interface RuleOptions {
-  test?: webpack.RuleSetCondition;
-  exclude?: webpack.RuleSetCondition;
-}
+/* eslint-disable @typescript-eslint/indent -- Generic indentation is broken and expects 0 spaces */
+type RuleOptions = Pick<
+  webpack.RuleSetRule,
+  'test' | 'exclude' | 'include' | 'resource' | 'issuer'
+>;
+/* eslint-enable @typescript-eslint/indent */
 
 /** Next.js' precompilation add "__esModule: true", but doesn't add an actual default exports */
 // @ts-expect-error -- Next.js fucks something up
@@ -108,7 +110,10 @@ function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtract
 module.exports = (pluginOptions = {}, ruleOptions: RuleOptions = {}) => (nextConfig: NextConfig = {}) => {
   const {
     test = /\.(tsx|ts|js|mjs|jsx)$/,
-    exclude = /node_modules/
+    exclude = /node_modules/,
+    include,
+    resource,
+    issuer
   } = ruleOptions;
   return {
     ...nextConfig,
@@ -164,6 +169,9 @@ module.exports = (pluginOptions = {}, ruleOptions: RuleOptions = {}) => (nextCon
       config.module.rules.push({
         test,
         exclude,
+        include,
+        resource,
+        issuer,
         use: [
           {
             loader: Style9Plugin.loader,
