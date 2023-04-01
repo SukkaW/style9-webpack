@@ -195,6 +195,7 @@ module.exports = (pluginOptions = {}, _ruleOptions: RuleOptions = {}) => (nextCo
           // We apply cacheGroups to style9 virtual css only
           test: /style9\.css/,
           chunks: 'all',
+          type: 'css/mini-extract',
           enforce: true
         };
 
