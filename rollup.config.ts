@@ -5,7 +5,8 @@ import copy from 'rollup-plugin-copy';
 import pkgJson from './package.json';
 import { builtinModules } from 'module';
 
-const externalModules = (pkgJson.dependencies ? Object.keys(pkgJson.dependencies) : [])
+const externalModules = Object.keys(pkgJson.dependencies)
+  .concat(Object.keys(pkgJson.peerDependencies))
   .concat(builtinModules).concat('next');
 const external = (id: string) => externalModules.some((name) => id === name || id.startsWith(`${name}/`));
 
