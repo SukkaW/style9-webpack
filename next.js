@@ -1,3 +1,5 @@
 'use strict';
 
-module.exports = require('./dist/next');
+/** @type {import('./dist/next')} */
+const withStyle9 = require('./dist/next');
+module.exports = withStyle9;

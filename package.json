@@ -3,6 +3,7 @@
   "version": "0.5.0",
   "description": "The another Webpack Plugin for Atomic CSS-in-JS implementation style9",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "next.js",
@@ -57,6 +58,7 @@
     "next": "^13.4.13",
     "rollup": "^3.27.2",
     "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-dts": "^5.3.1",
     "rollup-plugin-swc3": "^0.9.1",
     "typescript": "^5.1.6",
     "webpack": "^5.75.0"

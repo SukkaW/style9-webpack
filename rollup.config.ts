@@ -1,5 +1,6 @@
 import { defineConfig } from 'rollup';
 import { swc } from 'rollup-plugin-swc3';
+import { dts } from 'rollup-plugin-dts';
 import copy from 'rollup-plugin-copy';
 
 import pkgJson from './package.json';
@@ -26,6 +27,13 @@ export default defineConfig([{
   ],
   external
 }, {
+  input: 'src/index.ts',
+  output: {
+    file: 'dist/index.d.ts',
+    format: 'commonjs'
+  },
+  plugins: [dts()]
+}, {
   input: 'src/virtualFileLoader.ts',
   output: {
     file: 'dist/virtualFileLoader.js',
@@ -51,14 +59,19 @@ export default defineConfig([{
     file: 'dist/next.js',
     format: 'commonjs'
   },
-  plugins: [
-    swc()
-  ],
+  plugins: [swc()],
   external(id: string) {
     const isExternal = external(id);
     if (isExternal) return true;
     return id === './index';
   }
+}, {
+  input: 'src/next.ts',
+  output: {
+    file: 'dist/next.d.ts',
+    format: 'commonjs'
+  },
+  plugins: [dts()]
 }, {
   input: 'src/next-appdir/index.ts',
   output: {
@@ -78,6 +91,13 @@ export default defineConfig([{
     if (isExternal) return true;
     return id === '../index';
   }
+}, {
+  input: 'src/next-appdir/index.ts',
+  output: {
+    file: 'dist/next-appdir/index.d.ts',
+    format: 'commonjs'
+  },
+  plugins: [dts()]
 }, {
   input: 'src/next-appdir/style9-next-loader.ts',
   output: {

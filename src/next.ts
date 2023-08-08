@@ -103,7 +103,7 @@ function getStyle9VirtualCssLoader(options: WebpackConfigContext, MiniCssExtract
   return loaders;
 }
 
-module.exports = (pluginOptions = {}, _ruleOptions: RuleOptions = {}) => (nextConfig: NextConfig = {}) => {
+export = (pluginOptions = {}, _ruleOptions: RuleOptions = {}) => (nextConfig: NextConfig = {}) => {
   const ruleOptions = {
     test: /\.(tsx|ts|js|mjs|jsx)$/,
     exclude: /node_modules/,
